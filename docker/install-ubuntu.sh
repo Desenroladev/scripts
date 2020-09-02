@@ -26,7 +26,7 @@ add-apt-repository \
 
 #Instala a docker engine após atualizar os pacotes novamente
 apt-get update
-apt-get install docker-ce docker-ce-cli containerd.io
+apt-get install -y docker-ce docker-ce-cli containerd.io
 
 #Roda a classica imagem hello word para verificar se a instalação ocorreu corretamente
 docker run hello-world
