@@ -4,29 +4,23 @@
 apt-get update
 
 #Instala pacotes para permitir o APT usar repositorios com HTTPS
-apt-get install -y \
+apt-get install \
     apt-transport-https \
     ca-certificates \
     curl \
-    gnupg-agent \
-    software-properties-common
+    gnupg \
+    lsb-release
 
 #Adiciona a chave publica do Docker ao APT:
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-
-
-#Verifica se a chave esta instala corretamente
-apt-key fingerprint 0EBFCD88
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 #Configura o repositorio estavel do docker ao APT
-add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 #Instala a docker engine após atualizar os pacotes novamente
 apt-get update
-apt-get install -y docker-ce docker-ce-cli containerd.io
+apt-get install docker-ce docker-ce-cli containerd.io
 
 #Roda a classica imagem hello word para verificar se a instalação ocorreu corretamente
 docker run hello-world
